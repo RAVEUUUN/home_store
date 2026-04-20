@@ -1,9 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Truck, Shield, Headphones, Star, ChevronRight, Flame, Clock, Lock, BadgeCheck, ShieldCheck } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { ArrowRight, Truck, Shield, Headphones, Star, ChevronRight, BadgeCheck, ShieldCheck } from 'lucide-react'
 import ProductCard from '@/components/shared/ProductCard'
 import PageTransition from '@/components/shared/PageTransition'
 import { HomePageSkeleton } from '@/components/skeletons'
@@ -37,86 +33,73 @@ export default function Home() {
 
     return (
         <PageTransition loading={loading} skeleton={<HomePageSkeleton />}>
-            <div>
-                {/* ═══════════════════════════════════════════════
-                    1 · HERO — Slider if discounts exist, else Static
-                ═══════════════════════════════════════════════ */}
+            <div className="bg-[#FAFAF8]">
+                {/* ═══ 1. HERO ═══ */}
                 {discountedProducts.length > 0 ? (
                     <HeroSlider products={discountedProducts} />
                 ) : (
-                    <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/80 to-slate-100/60">
-                        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32">
-                            <div className="grid lg:grid-cols-2 gap-12 items-center">
-                                {/* Left copy */}
-                                <div className="space-y-7 animate-fade-in-up">
-                                    <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 gap-1.5 text-sm py-1 px-3 font-medium">
-                                        <Flame className="size-3.5" /> New Season Arrivals
-                                    </Badge>
-                                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
-                                        Smart Home
-                                        <span className="block text-primary">Appliances</span>
-                                        <span className="block text-muted-foreground text-2xl sm:text-3xl font-medium mt-3">
-                                            Up to 40% Off This Season
-                                        </span>
-                                    </h1>
-                                    <p className="text-base sm:text-lg text-muted-foreground max-w-lg leading-relaxed">
-                                        Premium brands at the best prices. Free delivery on orders over 1,500 TND, up to 2-year warranty, and hassle-free returns on every purchase.
+                    <section className="relative overflow-hidden border-b border-[#E7E5DF]">
+                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
+                            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                                <div className="space-y-8 animate-fade-in-up">
+                                    <p className="text-[11px] uppercase tracking-[0.3em] text-foreground/40 font-medium">
+                                        New Season Collection — 2026
                                     </p>
-                                    <div className="flex flex-wrap gap-4 pt-1">
-                                        <Link to="/shop">
-                                            <Button size="lg" className="gap-2.5 bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_2px_8px_0_rgba(26,86,219,0.25)] hover:shadow-[0_4px_16px_0_rgba(26,86,219,0.3)] transition-all duration-200 active:scale-[0.98] h-12 px-7 text-[15px]">
-                                                Browse All Products <ArrowRight className="size-4" />
-                                            </Button>
+                                    <h1 className="text-5xl sm:text-6xl lg:text-7xl font-serif font-bold text-foreground leading-[1.05]">
+                                        Smart Home<br />
+                                        <em className="italic font-normal text-foreground/50">Appliances</em>
+                                    </h1>
+                                    <p className="text-base text-foreground/50 max-w-md leading-relaxed">
+                                        Premium brands at the best prices. Free delivery on orders over 1,500 TND, up to 2-year warranty, and hassle-free returns.
+                                    </p>
+                                    <div className="flex flex-wrap gap-4 pt-2">
+                                        <Link to="/shop"
+                                            className="inline-flex items-center gap-2.5 bg-[#1C1917] text-white px-8 py-4 text-sm font-semibold hover:bg-[#1C1917]/90 transition-colors">
+                                            Explore Collection <ArrowRight className="size-4" />
                                         </Link>
-                                        <Link to="/shop?sort=rating">
-                                            <Button size="lg" variant="outline" className="gap-2 border-border text-foreground hover:bg-slate-50 active:scale-[0.98] transition-all duration-200 h-12 px-6">
-                                                <Star className="size-4 fill-amber-400 text-amber-400" /> Best Sellers
-                                            </Button>
+                                        <Link to="/shop?sort=rating"
+                                            className="inline-flex items-center gap-2.5 border border-[#E7E5DF] text-foreground px-8 py-4 text-sm font-medium hover:border-foreground/30 hover:bg-white transition-colors">
+                                            <Star className="size-4 fill-[#B45309] text-[#B45309]" /> Best Sellers
                                         </Link>
                                     </div>
-                                    {/* Social proof stats */}
-                                    <div className="flex gap-10 pt-4">
+                                    <div className="flex gap-12 pt-2 border-t border-[#E7E5DF] pt-8">
                                         {[
-                                            { val: '10,000+', label: 'Happy Customers' },
+                                            { val: '10,000+', label: 'Satisfied Clients' },
                                             { val: '500+', label: 'Products' },
-                                            { val: '4.8★', label: 'Avg. Rating' },
+                                            { val: '4.8', label: 'Average Rating' },
                                         ].map(s => (
                                             <div key={s.label}>
-                                                <p className="text-2xl font-bold text-foreground tracking-tight">{s.val}</p>
-                                                <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+                                                <p className="text-2xl font-serif font-bold text-foreground">{s.val}</p>
+                                                <p className="text-xs text-foreground/40 mt-0.5 uppercase tracking-wider">{s.label}</p>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                {/* Right — promo card (desktop only) */}
                                 <div className="hidden lg:block animate-fade-in-up stagger-3">
-                                    <div className="relative bg-white rounded-2xl border border-border/60 shadow-lg overflow-hidden">
-                                        <span className="absolute top-4 left-4 z-10 inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-900/85 text-white backdrop-blur-sm tracking-wide">
-                                            LIMITED TIME
+                                    <div className="relative bg-white border border-[#E7E5DF] overflow-hidden">
+                                        <span className="absolute top-5 left-5 z-10 text-[10px] font-bold px-3 py-1.5 tracking-widest uppercase bg-[#1C1917] text-white">
+                                            Limited Time
                                         </span>
                                         <img
                                             src="https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=400&fit=crop"
                                             alt="Featured appliance"
-                                            className="w-full h-64 object-cover"
+                                            className="w-full h-72 object-cover"
                                         />
-                                        <div className="p-6 space-y-3">
-                                            <h3 className="text-lg font-bold text-foreground">Samsung Smart Refrigerator</h3>
+                                        <div className="p-7 space-y-4">
+                                            <h3 className="text-lg font-serif font-bold text-foreground">Samsung Smart Refrigerator</h3>
                                             <div className="flex items-baseline gap-3">
-                                                <span className="text-2xl font-extrabold text-foreground tracking-tight">{formatPrice(7749.97)}</span>
-                                                <span className="text-sm text-muted-foreground/50 line-through">{formatPrice(9299.97)}</span>
-                                                <span className="text-xs font-medium text-emerald-600/80 bg-emerald-50/60 px-2 py-0.5 rounded-md">Save {formatPrice(1550)}</span>
+                                                <span className="text-2xl font-bold tracking-tight">{formatPrice(7749.97)}</span>
+                                                <span className="text-sm text-foreground/30 line-through">{formatPrice(9299.97)}</span>
+                                                <span className="text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5">Save {formatPrice(1550)}</span>
                                             </div>
-                                            <Link to="/product/1">
-                                                <Button className="w-full mt-1 bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_1px_3px_0_rgba(26,86,219,0.2)] hover:shadow-[0_2px_8px_0_rgba(26,86,219,0.25)] active:scale-[0.98] transition-all duration-200">
-                                                    View Deal <ArrowRight className="size-4 ml-2" />
-                                                </Button>
+                                            <Link to="/product/1"
+                                                className="inline-flex items-center gap-2 w-full justify-center border border-foreground/20 text-foreground py-3 text-sm font-medium hover:bg-foreground hover:text-[#FAFAF8] transition-colors">
+                                                View Deal <ArrowRight className="size-4" />
                                             </Link>
-                                            {/* Mini trust signal */}
-                                            <div className="flex items-center justify-center gap-4 pt-1 text-[11px] text-muted-foreground">
+                                            <div className="flex items-center justify-center gap-6 text-[11px] text-foreground/40 pt-1">
                                                 <span className="flex items-center gap-1"><Truck className="size-3" /> Free Delivery</span>
                                                 <span className="flex items-center gap-1"><Shield className="size-3" /> 2-Year Warranty</span>
-                                                <span className="flex items-center gap-1"><Lock className="size-3" /> Secure Checkout</span>
                                             </div>
                                         </div>
                                     </div>
@@ -126,48 +109,21 @@ export default function Home() {
                     </section>
                 )}
 
-                {/* ═══════════════════════════════════════════════
-                    2 · CATEGORY QUICK CHIPS — horizontal scroll
-                ═══════════════════════════════════════════════ */}
-                <section className="bg-white border-b">
+                {/* ═══ 2. TRUST BAR ═══ */}
+                <section className="border-b border-[#E7E5DF] bg-white">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="flex items-center gap-1 overflow-x-auto py-3 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-                            <Link to="/shop">
-                                <Button variant="ghost" size="sm" className="shrink-0 text-sm hover:text-primary hover:bg-primary/5 gap-1.5 font-medium whitespace-nowrap">
-                                    All Products
-                                </Button>
-                            </Link>
-                            <Separator orientation="vertical" className="h-5 mx-1 shrink-0" />
-                            {dynamicCategories.map(catName => (
-                                <Link key={catName} to={`/shop?category=${catName}`}>
-                                    <Button variant="ghost" size="sm" className="shrink-0 text-sm hover:text-primary hover:bg-primary/5 gap-2 font-medium whitespace-nowrap">
-                                        {catName}
-                                    </Button>
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ═══════════════════════════════════════════════
-                    3 · TRUST SIGNALS — strong value props
-                ═══════════════════════════════════════════════ */}
-                <section className="bg-[#f8fafc] border-b border-border/50">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-border/40">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-[#E7E5DF]">
                             {[
-                                { icon: Truck, title: 'Free Delivery', desc: 'Orders over 1,500 TND ship free', color: 'text-primary bg-primary/8' },
-                                { icon: ShieldCheck, title: '2-Year Warranty', desc: 'Full manufacturer coverage', color: 'text-emerald-600 bg-emerald-50' },
-                                { icon: Headphones, title: '24/7 Expert Support', desc: 'Real people, real help', color: 'text-violet-600 bg-violet-50' },
-                                { icon: BadgeCheck, title: 'Price Match Guarantee', desc: "We'll beat any competitor", color: 'text-primary bg-primary/8' },
+                                { icon: Truck, title: 'Free Delivery', desc: 'Orders over 1,500 TND' },
+                                { icon: ShieldCheck, title: '2-Year Warranty', desc: 'Full manufacturer coverage' },
+                                { icon: Headphones, title: '24/7 Support', desc: 'Real experts, real help' },
+                                { icon: BadgeCheck, title: 'Price Match', desc: "We'll beat any competitor" },
                             ].map(item => (
-                                <div key={item.title} className="flex items-center gap-3.5 py-6 px-5 lg:px-6 hover:bg-white/80 transition-colors duration-200 group cursor-default">
-                                    <div className={`flex items-center justify-center size-10 rounded-xl shrink-0 ${item.color} group-hover:scale-105 transition-transform duration-300`}>
-                                        <item.icon className="size-5" />
-                                    </div>
+                                <div key={item.title} className="flex items-center gap-4 py-5 px-5 lg:px-7 group">
+                                    <item.icon className="size-5 text-foreground/30 shrink-0 group-hover:text-foreground transition-colors duration-300" />
                                     <div>
-                                        <h3 className="font-semibold text-sm text-foreground">{item.title}</h3>
-                                        <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                                        <h4 className="text-[13px] font-semibold text-foreground">{item.title}</h4>
+                                        <p className="text-xs text-foreground/40 mt-0.5">{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -175,147 +131,118 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* ═══════════════════════════════════════════════
-                    4 · FLASH DEALS — premium urgency
-                ═══════════════════════════════════════════════ */}
+                {/* ═══ 3. FLASH DEALS ═══ */}
                 {deals.length > 0 && (
-                    <section className="py-16 sm:py-24 bg-white">
+                    <section className="py-20 sm:py-28 bg-[#FAFAF8]">
                         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            {/* Inner surface for visual grouping */}
-                            <div className="rounded-2xl bg-gradient-to-b from-slate-50/50 to-transparent p-6 sm:p-8 -mx-2 sm:-mx-4">
-                                <SectionHeader
-                                    icon={<Clock className="size-5" />}
-                                    iconColor="bg-amber-50 text-amber-600"
-                                    title="Flash Deals"
-                                    subtitle="Curated savings on select items — while stock lasts"
-                                    href="/shop"
-                                    linkLabel="View All Deals"
-                                />
-                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-                                    {deals.map((product, i) => (
-                                        <ProductCard key={product.id} product={product} index={i} />
-                                    ))}
+                            <div className="flex items-end justify-between mb-12">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 mb-3 font-medium">Limited Time</p>
+                                    <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Flash Deals</h2>
+                                    <p className="text-sm text-foreground/50 mt-2">Curated savings on select items — while stock lasts</p>
                                 </div>
+                                <Link to="/shop"
+                                    className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-foreground/50 hover:text-foreground transition-colors">
+                                    View All <ChevronRight className="size-4" />
+                                </Link>
+                            </div>
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E7E5DF]">
+                                {deals.map((product, i) => (
+                                    <div key={product.id} className="bg-[#FAFAF8]">
+                                        <ProductCard product={product} index={i} />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </section>
                 )}
 
-                {/* ═══════════════════════════════════════════════
-                    5 · SHOP BY CATEGORY — icon cards
-                ═══════════════════════════════════════════════ */}
-                <section className="py-16 sm:py-24 bg-[#f8fafc]">
+                {/* ═══ 4. EDITORIAL BANNER ═══ */}
+                <section className="bg-[#1C1917] text-white py-20 sm:py-28">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <SectionHeader
-                            title="Shop by Category"
-                            subtitle="Browse our curated collections"
-                            href="/shop"
-                            linkLabel="All Categories"
-                        />
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                            {dynamicCategories.map((catName, i) => (
-                                <Link key={catName} to={`/shop?category=${catName}`}>
-                                    <Card className={`product-card group py-0 border-border/40 bg-white overflow-hidden cursor-pointer shadow-sm animate-fade-in-up stagger-${i + 1}`}>
-                                        <CardContent className="p-5 text-center space-y-3 flex flex-col items-center">
-                                            <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{catName}</h3>
-                                            <p className="text-[11px] text-muted-foreground">{products.filter(p => p.category === catName).length} products</p>
-                                        </CardContent>
-                                    </Card>
+                        <div className="grid lg:grid-cols-2 gap-16 items-center">
+                            <div className="space-y-6">
+                                <p className="text-[10px] uppercase tracking-[0.3em] text-white/30 font-medium">The HomeStore Difference</p>
+                                <h2 className="text-4xl sm:text-5xl font-serif font-bold leading-tight">
+                                    Elevate your<br />
+                                    <em className="italic font-normal text-white/60">living space</em>
+                                </h2>
+                                <p className="text-white/50 text-base leading-relaxed max-w-md">
+                                    We believe that the kitchen is the heart of the home. Every appliance we carry is selected for its quality, performance, and design integrity.
+                                </p>
+                                <Link to="/shop"
+                                    className="inline-flex items-center gap-2.5 border border-white/20 text-white px-7 py-3.5 text-sm font-medium hover:bg-white hover:text-[#1C1917] transition-colors">
+                                    Discover the Collection <ArrowRight className="size-4" />
                                 </Link>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ═══════════════════════════════════════════════
-                    6 · FEATURED PRODUCTS — clean grid
-                ═══════════════════════════════════════════════ */}
-                <section className="py-16 sm:py-24 bg-white">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        {/* Inner surface for visual grouping */}
-                        <div className="rounded-2xl bg-gradient-to-b from-slate-50/40 to-transparent p-6 sm:p-8 -mx-2 sm:-mx-4">
-                            <SectionHeader
-                                title="Featured Products"
-                                subtitle="Handpicked by our team for quality and value"
-                                href="/shop"
-                                linkLabel="Shop All"
-                            />
-                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-                                {featuredProducts.map((product, i) => (
-                                    <ProductCard key={product.id} product={product} index={i} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-px bg-white/10">
+                                {[
+                                    { val: '10K+', label: 'Happy Families' },
+                                    { val: '500+', label: 'Products Stocked' },
+                                    { val: '98%', label: 'Satisfaction Rate' },
+                                    { val: '5★', label: 'Expert Reviews' },
+                                ].map(stat => (
+                                    <div key={stat.label} className="bg-[#1C1917] p-8">
+                                        <p className="text-4xl font-serif font-bold text-white">{stat.val}</p>
+                                        <p className="text-xs uppercase tracking-[0.2em] text-white/30 mt-2">{stat.label}</p>
+                                    </div>
                                 ))}
                             </div>
                         </div>
                     </div>
                 </section>
 
+                {/* ═══ 5. CATEGORIES ═══ */}
+                <section className="py-20 sm:py-28 bg-[#FAFAF8]">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-end justify-between mb-12">
+                            <div>
+                                <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 mb-3 font-medium">Explore</p>
+                                <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Browse by Category</h2>
+                            </div>
+                            <Link to="/shop"
+                                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-foreground/50 hover:text-foreground transition-colors">
+                                All Products <ChevronRight className="size-4" />
+                            </Link>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-[#E7E5DF]">
+                            {dynamicCategories.map((catName, i) => (
+                                <Link key={catName} to={`/shop?category=${catName}`}
+                                    className={`group bg-white hover:bg-[#1C1917] transition-colors p-6 text-center animate-fade-in-up stagger-${Math.min(i + 1, 8)}`}>
+                                    <h3 className="text-sm font-semibold text-foreground group-hover:text-white transition-colors">{catName}</h3>
+                                    <p className="text-[11px] text-foreground/40 group-hover:text-white/50 mt-1.5 transition-colors">
+                                        {products.filter(p => p.category === catName).length} products
+                                    </p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
 
-
-                {/* ═══════════════════════════════════════════════
-                    8 · BOTTOM TRUST STRIP — reassurance before footer
-                ═══════════════════════════════════════════════ */}
-                <section className="bg-[#fafbfc] border-b border-border/40">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-2">
-                                <Lock className="size-4 text-primary" />
-                                <span><span className="font-medium text-foreground">Secure Payments</span> — SSL encrypted checkout</span>
-                            </span>
-                            <span className="hidden sm:block text-border">|</span>
-                            <span className="flex items-center gap-2">
-                                <Truck className="size-4 text-primary" />
-                                <span><span className="font-medium text-foreground">Fast Delivery</span> — 2–5 business days</span>
-                            </span>
-                            <span className="hidden sm:block text-border">|</span>
-                            <span className="flex items-center gap-2">
-                                <ShieldCheck className="size-4 text-primary" />
-                                <span><span className="font-medium text-foreground">30-Day Returns</span> — no questions asked</span>
-                            </span>
+                {/* ═══ 6. FEATURED PRODUCTS ═══ */}
+                <section className="py-20 sm:py-28 bg-white border-t border-[#E7E5DF]">
+                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <div className="flex items-end justify-between mb-12">
+                            <div>
+                                <p className="text-[10px] uppercase tracking-[0.3em] text-foreground/40 mb-3 font-medium">Handpicked</p>
+                                <h2 className="text-3xl sm:text-4xl font-serif font-bold text-foreground">Featured Products</h2>
+                                <p className="text-sm text-foreground/50 mt-2">Curated for quality, value, and enduring design</p>
+                            </div>
+                            <Link to="/shop"
+                                className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-foreground/50 hover:text-foreground transition-colors">
+                                Shop All <ChevronRight className="size-4" />
+                            </Link>
+                        </div>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E7E5DF]">
+                            {featuredProducts.map((product, i) => (
+                                <div key={product.id} className="bg-white">
+                                    <ProductCard product={product} index={i} />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </section>
             </div>
         </PageTransition>
-    )
-}
-
-/* ──────────────────────────────────────────────
-   Reusable section header with optional icon, badge & "View All" link
-   ────────────────────────────────────────────── */
-interface SectionHeaderProps {
-    title: string
-    subtitle: string
-    icon?: React.ReactNode
-    iconColor?: string
-    badge?: React.ReactNode
-    href?: string
-    linkLabel?: string
-}
-
-function SectionHeader({ title, subtitle, icon, iconColor, badge, href, linkLabel }: SectionHeaderProps) {
-    return (
-        <div className="flex items-center justify-between mb-10 sm:mb-12">
-            <div className="flex items-center gap-3">
-                {icon && (
-                    <div className={`flex items-center justify-center size-10 rounded-xl ${iconColor ?? 'bg-muted text-muted-foreground'}`}>
-                        {icon}
-                    </div>
-                )}
-                <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
-                        {title}
-                        {badge}
-                    </h2>
-                    <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
-                </div>
-            </div>
-            {href && (
-                <Link to={href} className="hidden sm:block">
-                    <Button variant="outline" size="sm" className="gap-1 hover:text-primary hover:border-primary/40 transition-colors active:scale-[0.98] duration-200">
-                        {linkLabel ?? 'View All'} <ChevronRight className="size-4" />
-                    </Button>
-                </Link>
-            )}
-        </div>
     )
 }

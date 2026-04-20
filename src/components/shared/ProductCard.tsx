@@ -176,64 +176,50 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
 
     return (
         <>
-            <Card
-                className={`product-card group relative flex flex-col overflow-hidden py-0 gap-0 border border-border/40 bg-white h-full animate-fade-in-up stagger-${Math.min(index % 8 + 1, 8)}`}
-            >
-                {/* ── Quick action buttons ── */}
-                <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ease-out">
+            <div className={`product-card group relative flex flex-col bg-white h-full animate-fade-in-up stagger-${Math.min(index % 8 + 1, 8)}`}>
+
+                {/* ── Quick actions ── */}
+                <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                     <button
-                        className={`flex items-center justify-center size-8 rounded-full shadow-sm backdrop-blur-md transition-all duration-200 ${wishlisted
-                            ? 'bg-red-50 text-red-500 hover:bg-red-100 shadow-red-100/50'
-                            : 'bg-white/95 text-slate-500 hover:text-slate-900 hover:bg-white hover:shadow-md'
-                            }`}
+                        className={`flex items-center justify-center size-8 bg-white shadow-sm transition-colors duration-200 border border-[#E7E5DF] ${wishlisted ? 'text-red-500' : 'text-foreground/30 hover:text-foreground'}`}
                         onClick={handleWishlist}
                     >
-                        <Heart className={`size-3.5 transition-transform duration-200 hover:scale-110 ${wishlisted ? 'fill-current' : ''}`} />
+                        <Heart className={`size-3.5 ${wishlisted ? 'fill-current' : ''}`} />
                     </button>
                     <button
-                        className="flex items-center justify-center size-8 rounded-full shadow-sm bg-white/95 backdrop-blur-md text-slate-500 hover:text-slate-900 hover:bg-white hover:shadow-md transition-all duration-200"
+                        className="flex items-center justify-center size-8 bg-white shadow-sm text-foreground/30 hover:text-foreground transition-colors border border-[#E7E5DF]"
                         onClick={handleQuickView}
                     >
                         <Eye className="size-3.5" />
                     </button>
                 </div>
 
-                {/* ── Image — dominant visual focus ── */}
-                <Link to={`/product/${product.id}`} className="block">
-                    <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-slate-50 via-slate-50 to-slate-100/80">
-                        {/* Skeleton placeholder */}
-                        {!imgLoaded && (
-                            <Skeleton className="absolute inset-0 rounded-none" />
-                        )}
+                {/* ── Image ── */}
+                <Link to={`/product/${product.id}`} className="block overflow-hidden">
+                    <div className="relative aspect-square overflow-hidden bg-[#F5F5F0]">
+                        {!imgLoaded && <Skeleton className="absolute inset-0 rounded-none" />}
                         <img
                             src={product.image}
                             alt={product.name}
                             onLoad={() => setImgLoaded(true)}
-                            className={`object-cover w-full h-full transition-transform duration-700 ease-out will-change-transform group-hover:scale-105 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                            className={`object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04] ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
                         />
 
-                        {/* Subtle bottom gradient for depth */}
-                        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/[0.03] to-transparent pointer-events-none" />
-
-                        {/* Badges — top-left, max 2, premium & minimal */}
+                        {/* Badges */}
                         {badges.length > 0 && (
-                            <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
-                                {badges.map(badge => (
-                                    <span
-                                        key={badge.type}
-                                        className={`inline-flex items-center gap-1 text-[10px] font-semibold tracking-wide px-2 py-[3px] rounded-md ${badge.className}`}
-                                    >
-                                        {badge.icon}
-                                        {badge.label}
+                            <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                                {badges.slice(0, 1).map(badge => (
+                                    <span key={badge.type}
+                                        className="inline-flex items-center gap-1 text-[9px] font-bold tracking-widest uppercase px-2.5 py-1 bg-[#1C1917] text-white">
+                                        {badge.icon}{badge.label}
                                     </span>
                                 ))}
                             </div>
                         )}
 
-                        {/* Out of stock overlay */}
                         {!product.inStock && (
-                            <div className="absolute inset-0 bg-white/70 backdrop-blur-[3px] flex items-center justify-center">
-                                <span className="text-slate-600 font-medium text-xs tracking-wide uppercase bg-white/80 px-4 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                            <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] flex items-center justify-center">
+                                <span className="text-xs font-bold uppercase tracking-widest text-foreground/50 bg-white px-4 py-2 border border-[#E7E5DF]">
                                     Sold Out
                                 </span>
                             </div>
@@ -241,94 +227,55 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
                     </div>
                 </Link>
 
-                {/* ── Content — flex-grow so card bottoms align ── */}
-                <CardContent className="p-4 pt-3.5 flex flex-col flex-1 gap-0">
-                    {/* Brand — subtle, secondary info */}
-                    <div className="flex items-center justify-between">
-                        <p className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-widest">{product.brand}</p>
-                        <p className="text-[9px] text-muted-foreground/50 font-mono">{product.productCode}</p>
-                    </div>
+                {/* ── Content ── */}
+                <div className="p-4 flex flex-col flex-1 border-t border-[#E7E5DF]">
+                    <p className="text-[9px] uppercase tracking-[0.2em] text-foreground/30 font-bold">{product.brand}</p>
 
-                    {/* Title — clear, balanced, always 2-line height */}
                     <Link to={`/product/${product.id}`}>
-                        <h3 className="font-medium text-[13px] leading-[1.4] mt-1.5 text-foreground hover:text-primary transition-colors duration-200 line-clamp-2 min-h-[2.5rem]">
+                        <h3 className="text-sm font-medium text-foreground leading-snug mt-1.5 line-clamp-2 min-h-[2.5rem] hover:text-foreground/60 transition-colors">
                             {product.name}
                         </h3>
                     </Link>
 
-                    {/* Rating — visually subtle, informational */}
-                    <div className="flex items-center gap-1.5 mt-2">
-                        <div className="flex items-center">
-                            {Array.from({ length: 5 }, (_, i) => (
-                                <Star
-                                    key={i}
-                                    className={`size-3 ${i < Math.floor(product.rating)
-                                        ? 'fill-amber-400 text-amber-400'
-                                        : 'fill-slate-100 text-slate-100'
-                                        }`}
-                                />
-                            ))}
-                        </div>
-                        <span className="text-[11px] text-muted-foreground/60 tabular-nums">{product.rating}</span>
-                        <span className="text-[11px] text-muted-foreground/50">·</span>
-                        <span className="text-[11px] text-muted-foreground/60">{product.reviewCount}</span>
+                    <div className="flex items-center gap-1 mt-2">
+                        {Array.from({ length: 5 }, (_, i) => (
+                            <Star key={i} className={`size-2.5 ${i < Math.floor(product.rating) ? 'fill-[#B45309] text-[#B45309]' : 'fill-foreground/10 text-foreground/10'}`} />
+                        ))}
+                        <span className="text-[10px] text-foreground/30 ml-1">{product.rating} ({product.reviewCount})</span>
                     </div>
 
-                    {/* Spacer to push price + CTA to bottom */}
                     <div className="flex-1" />
 
-                    {/* ── Price block — strongest visual emphasis ── */}
-                    <div className="mt-4 pt-3.5 border-t border-border/30">
-                        <div className="flex items-baseline gap-2">
-                            <span className="font-bold text-xl tracking-tight text-foreground">
-                                {formatPrice(effectivePrice)}
+                    {/* Price */}
+                    <div className="mt-4 flex items-baseline gap-2">
+                        <span className="text-lg font-bold tracking-tight">{formatPrice(effectivePrice)}</span>
+                        {(hasDiscount || product.originalPrice) && (
+                            <span className="text-xs text-foreground/30 line-through">
+                                {formatPrice(hasDiscount ? product.price : product.originalPrice!)}
                             </span>
-
-                            {(hasDiscount || product.originalPrice) && (
-                                <span className="text-xs text-muted-foreground/50 line-through font-normal">
-                                    {formatPrice(hasDiscount ? product.price : product.originalPrice!)}
-                                </span>
-                            )}
-
-                            {hasDiscount && (
-                                <span className="ml-auto text-[10px] font-medium text-destructive/80 bg-destructive/10 px-1.5 py-0.5 rounded">
-                                    Save {formatPrice(product.price - effectivePrice)}
-                                </span>
-                            )}
-
-                            {!hasDiscount && discount > 0 && (
-                                <span className="ml-auto text-[10px] font-medium text-emerald-600/80 bg-emerald-50/60 px-1.5 py-0.5 rounded">
-                                    -{discount}%
-                                </span>
-                            )}
-                        </div>
+                        )}
+                        {!hasDiscount && discount > 0 && (
+                            <span className="ml-auto text-[9px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-1.5 py-0.5">
+                                -{discount}%
+                            </span>
+                        )}
                     </div>
 
-                    {/* Out of stock indicator */}
-                    {!product.inStock && (
-                        <div className="mt-2">
-                            <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full border bg-slate-50 text-slate-500 border-slate-200">
-                                <stockStatus.icon className="size-2.5" />
-                                Unavailable
-                            </span>
-                        </div>
-                    )}
-
-                    {/* ── CTA — clean, confident, always visible ── */}
-                    <Button
-                        size="sm"
-                        className={`w-full gap-2 text-xs font-medium mt-3 transition-all duration-200 rounded-lg ${product.inStock
-                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_1px_3px_0_rgba(26,86,219,0.2)] hover:shadow-[0_2px_8px_0_rgba(26,86,219,0.25)] active:scale-[0.98]'
-                            : 'bg-slate-50 text-slate-400 border border-slate-200 cursor-not-allowed shadow-none'
-                            }`}
+                    {/* CTA */}
+                    <button
                         disabled={!product.inStock}
                         onClick={handleAddToCart}
+                        className={`w-full mt-3 py-2.5 text-xs font-semibold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 ${
+                            product.inStock
+                                ? 'bg-[#1C1917] text-white hover:bg-[#1C1917]/85'
+                                : 'bg-[#F0EFE9] text-foreground/30 cursor-not-allowed'
+                        }`}
                     >
                         <ShoppingCart className="size-3.5" />
                         {product.inStock ? 'Add to Cart' : 'Sold Out'}
-                    </Button>
-                </CardContent>
-            </Card>
+                    </button>
+                </div>
+            </div>
 
             {/* ── Quick View Dialog ── */}
             <Dialog open={quickView} onOpenChange={setQuickView}>
