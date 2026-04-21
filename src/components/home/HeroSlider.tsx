@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, Flame, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
+import { useAuth } from '@/context/AuthContext'
 import type { Product } from '@/types'
 
 interface HeroSliderProps {
@@ -14,6 +15,9 @@ export default function HeroSlider({ products }: HeroSliderProps) {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [isAutoPlaying, setIsAutoPlaying] = useState(true)
     const sliderRef = useRef<HTMLElement>(null)
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const AUTO_PLAY_INTERVAL = 6000
 
@@ -110,7 +114,16 @@ export default function HeroSlider({ products }: HeroSliderProps) {
                         {/* CTAs */}
                         <div className="flex flex-wrap gap-4 pt-2">
                             <Link to={`/product/${currentProduct.id}`}>
-                                <Button size="lg" className="h-14 px-8 rounded-full gap-2.5 bg-primary hover:bg-primary/90 text-white font-bold shadow-[0_4px_14px_0_rgba(26,86,219,0.3)] hover:shadow-[0_6px_20px_0_rgba(26,86,219,0.4)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] text-[15px]">
+                                <Button
+                                    size="lg"
+                                    className="h-14 px-8 rounded-full gap-2.5 bg-primary hover:bg-primary/90 text-white font-bold shadow-[0_4px_14px_0_rgba(26,86,219,0.3)] hover:shadow-[0_6px_20px_0_rgba(26,86,219,0.4)] hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] text-[15px]"
+                                    onClick={(e) => {
+                                        if (!isAuthenticated) {
+                                            e.preventDefault()
+                                            navigate('/login', { state: { from: `${location.pathname}${location.search}` } })
+                                        }
+                                    }}
+                                >
                                     View Deal <ArrowRight className="size-4" />
                                 </Button>
                             </Link>

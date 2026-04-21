@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ShoppingCart, Star, Eye, Heart, Check, AlertTriangle, XCircle, Flame, Sparkles, TrendingUp, Crown, Clock } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/context/CartContext'
+import { useAuth } from '@/context/AuthContext'
 import { formatPrice, getEffectivePrice } from '@/lib/utils'
 import type { Product } from '@/types'
 import { toast } from 'sonner'
@@ -134,6 +135,9 @@ function getProductBadges(product: Product, discount: number): ProductBadge[] {
    ───────────────────────────────────────────── */
 export default function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
     const { addItem } = useCart()
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+    const location = useLocation()
     const [imgLoaded, setImgLoaded] = useState(false)
     const [wishlisted, setWishlisted] = useState(false)
     const [quickView, setQuickView] = useState(false)
@@ -156,6 +160,10 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault()
         e.stopPropagation()
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: `${location.pathname}${location.search}` } })
+            return
+        }
         if (!product.inStock) return
         addItem(product)
         toast.success(`${product.name} added to cart`)

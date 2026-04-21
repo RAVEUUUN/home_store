@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet, Navigate, useLocation } from 'react-router-dom'
 import { CartProvider } from '@/context/CartContext'
 import { AuthProvider } from '@/context/AuthContext'
 import { Toaster } from '@/components/ui/sonner'
@@ -16,6 +16,7 @@ import AdminDashboard from '@/pages/admin/Dashboard'
 import AdminProducts from '@/pages/admin/Products'
 import AdminOrders from '@/pages/admin/Orders'
 import AlertStocks from '@/pages/admin/AlertStocks'
+import { useAuth } from '@/context/AuthContext'
 
 function StoreLayout() {
   return (
@@ -38,6 +39,17 @@ function AdminWrapper() {
   )
 }
 
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { isAuthenticated } = useAuth()
+  const location = useLocation()
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: `${location.pathname}${location.search}` }} />
+  }
+
+  return children
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -48,8 +60,8 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/product/:id" element={<ProductDetails />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/cart" element={<RequireAuth><Cart /></RequireAuth>} />
+              <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Route>

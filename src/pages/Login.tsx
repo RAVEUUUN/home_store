@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Zap, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +16,8 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
     const { login } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = (location.state as { from?: string } | null)?.from || '/'
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -24,7 +26,7 @@ export default function Login() {
         setLoading(false)
         if (result.success) {
             toast.success('Welcome back!')
-            navigate('/')
+            navigate(from, { replace: true })
         } else {
             toast.error(result.message || 'Invalid email or password')
         }
@@ -93,12 +95,6 @@ export default function Login() {
                         <Link to="/register" className="text-primary font-semibold hover:underline">
                             Create Account
                         </Link>
-                    </div>
-
-                    <div className="mt-4 p-4 rounded-lg bg-primary/5 border border-primary/10 text-xs space-y-1.5">
-                        <p className="font-semibold text-foreground">Demo Credentials</p>
-                        <p className="text-muted-foreground"><span className="font-medium text-foreground">Admin:</span> admin@homestore.com / admin123</p>
-                        <p className="text-muted-foreground"><span className="font-medium text-foreground">Customer:</span> john@example.com / password123</p>
                     </div>
                 </CardContent>
             </Card>

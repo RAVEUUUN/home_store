@@ -81,3 +81,43 @@ WHERE event_object_schema = 'auth' AND event_object_table = 'users';
 SELECT policyname, cmd, qual, with_check
 FROM pg_policies
 WHERE schemaname = 'public' AND tablename = 'profiles';
+
+-- ============================================================================
+-- OPTIONAL CLEANUP: REMOVE SHIPPING STATE FROM ORDERS (IF PRESENT)
+-- ============================================================================
+
+-- Drop legacy scalar state columns if they exist
+ALTER TABLE IF EXISTS public.orders DROP COLUMN IF EXISTS state;
+ALTER TABLE IF EXISTS public.orders DROP COLUMN IF EXISTS shipping_state;
+
+-- Remove "state" key from JSON/JSONB shipping address payloads if present
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'orders'
+      AND column_name = 'shipping_address'
+      AND data_type = 'jsonb'
+  ) THEN
+    EXECUTE '
+      UPDATE public.orders
+      SET shipping_address = shipping_address - ''state''
+      WHERE shipping_address ? ''state''
+    ';
+  ELSIF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'orders'
+      AND column_name = 'shipping_address'
+      AND data_type = 'json'
+  ) THEN
+    EXECUTE '
+      UPDATE public.orders
+      SET shipping_address = (shipping_address::jsonb - ''state'')::json
+      WHERE (shipping_address::jsonb ? ''state'')
+    ';
+  END IF;
+END $$;

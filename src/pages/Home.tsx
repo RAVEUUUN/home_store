@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Truck, Shield, Headphones, Star, ChevronRight, Flame, Clock, Lock, BadgeCheck, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Truck, Shield, Headphones, Star, ChevronRight, Clock, Lock, BadgeCheck, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -39,92 +39,9 @@ export default function Home() {
         <PageTransition loading={loading} skeleton={<HomePageSkeleton />}>
             <div>
                 {/* ═══════════════════════════════════════════════
-                    1 · HERO — Slider if discounts exist, else Static
+                    1 · HERO — database-driven discount slider only
                 ═══════════════════════════════════════════════ */}
-                {discountedProducts.length > 0 ? (
-                    <HeroSlider products={discountedProducts} />
-                ) : (
-                    <section className="relative overflow-hidden bg-gradient-to-b from-white via-slate-50/80 to-slate-100/60">
-                        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32">
-                            <div className="grid lg:grid-cols-2 gap-12 items-center">
-                                {/* Left copy */}
-                                <div className="space-y-7 animate-fade-in-up">
-                                    <Badge variant="outline" className="border-primary/20 text-primary bg-primary/5 gap-1.5 text-sm py-1 px-3 font-medium">
-                                        <Flame className="size-3.5" /> New Season Arrivals
-                                    </Badge>
-                                    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground">
-                                        Smart Home
-                                        <span className="block text-primary">Appliances</span>
-                                        <span className="block text-muted-foreground text-2xl sm:text-3xl font-medium mt-3">
-                                            Up to 40% Off This Season
-                                        </span>
-                                    </h1>
-                                    <p className="text-base sm:text-lg text-muted-foreground max-w-lg leading-relaxed">
-                                        Premium brands at the best prices. Free delivery on orders over 1,500 TND, up to 2-year warranty, and hassle-free returns on every purchase.
-                                    </p>
-                                    <div className="flex flex-wrap gap-4 pt-1">
-                                        <Link to="/shop">
-                                            <Button size="lg" className="gap-2.5 bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_2px_8px_0_rgba(26,86,219,0.25)] hover:shadow-[0_4px_16px_0_rgba(26,86,219,0.3)] transition-all duration-200 active:scale-[0.98] h-12 px-7 text-[15px]">
-                                                Browse All Products <ArrowRight className="size-4" />
-                                            </Button>
-                                        </Link>
-                                        <Link to="/shop?sort=rating">
-                                            <Button size="lg" variant="outline" className="gap-2 border-border text-foreground hover:bg-slate-50 active:scale-[0.98] transition-all duration-200 h-12 px-6">
-                                                <Star className="size-4 fill-amber-400 text-amber-400" /> Best Sellers
-                                            </Button>
-                                        </Link>
-                                    </div>
-                                    {/* Social proof stats */}
-                                    <div className="flex gap-10 pt-4">
-                                        {[
-                                            { val: '10,000+', label: 'Happy Customers' },
-                                            { val: '500+', label: 'Products' },
-                                            { val: '4.8★', label: 'Avg. Rating' },
-                                        ].map(s => (
-                                            <div key={s.label}>
-                                                <p className="text-2xl font-bold text-foreground tracking-tight">{s.val}</p>
-                                                <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Right — promo card (desktop only) */}
-                                <div className="hidden lg:block animate-fade-in-up stagger-3">
-                                    <div className="relative bg-white rounded-2xl border border-border/60 shadow-lg overflow-hidden">
-                                        <span className="absolute top-4 left-4 z-10 inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-900/85 text-white backdrop-blur-sm tracking-wide">
-                                            LIMITED TIME
-                                        </span>
-                                        <img
-                                            src="https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=600&h=400&fit=crop"
-                                            alt="Featured appliance"
-                                            className="w-full h-64 object-cover"
-                                        />
-                                        <div className="p-6 space-y-3">
-                                            <h3 className="text-lg font-bold text-foreground">Samsung Smart Refrigerator</h3>
-                                            <div className="flex items-baseline gap-3">
-                                                <span className="text-2xl font-extrabold text-foreground tracking-tight">{formatPrice(7749.97)}</span>
-                                                <span className="text-sm text-muted-foreground/50 line-through">{formatPrice(9299.97)}</span>
-                                                <span className="text-xs font-medium text-emerald-600/80 bg-emerald-50/60 px-2 py-0.5 rounded-md">Save {formatPrice(1550)}</span>
-                                            </div>
-                                            <Link to="/product/1">
-                                                <Button className="w-full mt-1 bg-primary hover:bg-primary/90 text-white font-semibold shadow-[0_1px_3px_0_rgba(26,86,219,0.2)] hover:shadow-[0_2px_8px_0_rgba(26,86,219,0.25)] active:scale-[0.98] transition-all duration-200">
-                                                    View Deal <ArrowRight className="size-4 ml-2" />
-                                                </Button>
-                                            </Link>
-                                            {/* Mini trust signal */}
-                                            <div className="flex items-center justify-center gap-4 pt-1 text-[11px] text-muted-foreground">
-                                                <span className="flex items-center gap-1"><Truck className="size-3" /> Free Delivery</span>
-                                                <span className="flex items-center gap-1"><Shield className="size-3" /> 2-Year Warranty</span>
-                                                <span className="flex items-center gap-1"><Lock className="size-3" /> Secure Checkout</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                )}
+                {discountedProducts.length > 0 && <HeroSlider products={discountedProducts} />}
 
                 {/* ═══════════════════════════════════════════════
                     2 · CATEGORY QUICK CHIPS — horizontal scroll

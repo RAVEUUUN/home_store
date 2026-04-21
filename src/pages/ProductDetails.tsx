@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Star, ShoppingCart, Minus, Plus, Check, Truck, Shield, RotateCcw, Award } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -6,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useCart } from '@/context/CartContext'
+import { useAuth } from '@/context/AuthContext'
 import { getProductById } from '@/services/supabaseProducts'
 import { formatPrice, getEffectivePrice } from '@/lib/utils'
 import { ProductDetailsSkeleton } from '@/components/skeletons'
@@ -16,6 +18,9 @@ export default function ProductDetails() {
     const { id } = useParams<{ id: string }>()
     const [quantity, setQuantity] = useState(1)
     const { addItem } = useCart()
+    const { isAuthenticated } = useAuth()
+    const navigate = useNavigate()
+    const location = useLocation()
     const [product, setProduct] = useState<Product | null>(null)
     const [loading, setLoading] = useState(true)
 
@@ -164,6 +169,10 @@ export default function ProductDetails() {
                                             size="lg"
                                             className="gap-2 flex-1 bg-primary hover:bg-primary/90 text-white font-semibold shadow-sm btn-pop"
                                             onClick={() => {
+                                                if (!isAuthenticated) {
+                                                    navigate('/login', { state: { from: `${location.pathname}${location.search}` } })
+                                                    return
+                                                }
                                                 addItem(product, quantity)
                                                 toast.success(`${quantity}x ${product.name} added to cart`)
                                             }}

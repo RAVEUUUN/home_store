@@ -25,7 +25,6 @@ export default function Checkout() {
         phone: '',
         address: '',
         city: '',
-        state: '',
         zip: ''
     })
 
@@ -69,7 +68,6 @@ export default function Checkout() {
                 p_phone: formData.phone,
                 p_address_line: formData.address,
                 p_city: formData.city,
-                p_state: formData.state,
                 p_zip_code: formData.zip,
                 p_payment_method: 'COD',
                 p_items: orderItems,
@@ -150,14 +148,10 @@ export default function Checkout() {
                                         <Label htmlFor="address" className="text-xs font-semibold">Street Address</Label>
                                         <Input id="address" value={formData.address} onChange={handleInputChange} placeholder="123 Main Street" required className="bg-slate-50 focus:bg-white" />
                                     </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div className="space-y-2">
                                             <Label htmlFor="city" className="text-xs font-semibold">City</Label>
                                             <Input id="city" value={formData.city} onChange={handleInputChange} placeholder="New York" required className="bg-slate-50 focus:bg-white" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="state" className="text-xs font-semibold">State</Label>
-                                            <Input id="state" value={formData.state} onChange={handleInputChange} placeholder="NY" required className="bg-slate-50 focus:bg-white" />
                                         </div>
                                         <div className="space-y-2">
                                             <Label htmlFor="zip" className="text-xs font-semibold">ZIP Code</Label>
