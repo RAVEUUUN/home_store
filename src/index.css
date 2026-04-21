@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -45,7 +47,6 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Custom animations for skeleton/page transitions */
   --animate-fade-in: fadeIn 0.4s ease-out forwards;
   --animate-fade-in-up: fadeInUp 0.5s ease-out both;
   --animate-scale-in: scaleIn 0.3s ease-out both;
@@ -54,47 +55,47 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  /* Premium palette: deep blue + warm amber accent on clean white */
-  --background: #ffffff;
-  --foreground: #18181b;
-  --card: #ffffff;
-  --card-foreground: #18181b;
-  --popover: #ffffff;
-  --popover-foreground: #18181b;
-  --primary: #1a56db;
-  --primary-foreground: #ffffff;
-  --secondary: #f4f5f7;
-  --secondary-foreground: #1a56db;
-  --muted: #f8f9fb;
-  --muted-foreground: #6b7280;
-  --accent: #f4f5f7;
-  --accent-foreground: #1a56db;
-  --destructive: #dc2626;
-  --destructive-foreground: #dc2626;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #1a56db;
-  --chart-1: #1a56db;
-  --chart-2: #10b981;
-  --chart-3: #e07a2f;
-  --chart-4: #8b5cf6;
-  --chart-5: #ef4444;
-  /* Brand: warm amber accent — used sparingly */
-  --brand: #e07a2f;
-  --brand-foreground: #ffffff;
+  --radius: 0.375rem;
+  /* ── Luxury Palette: Deep Charcoal + Warm Cream + Warm Gold accent ── */
+  --background: #FAFAF8;
+  --foreground: #1C1917;
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+  --primary: #1C1917;
+  --primary-foreground: #FAFAF8;
+  --secondary: #F5F5F0;
+  --secondary-foreground: #1C1917;
+  --muted: #F0EFE9;
+  --muted-foreground: #78716C;
+  --accent: #F5F5F0;
+  --accent-foreground: #1C1917;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #E7E5DF;
+  --input: #E7E5DF;
+  --ring: #1C1917;
+  --chart-1: #1C1917;
+  --chart-2: #10B981;
+  --chart-3: #B45309;
+  --chart-4: #7C3AED;
+  --chart-5: #DC2626;
+  /* Gold accent — used sparingly */
+  --brand: #B45309;
+  --brand-foreground: #FFFFFF;
   /* Promo */
-  --promo: #dc3545;
-  --promo-foreground: #ffffff;
+  --promo: #DC2626;
+  --promo-foreground: #FFFFFF;
   /* Sidebar */
-  --sidebar: #f8f9fb;
-  --sidebar-foreground: #6b7280;
-  --sidebar-primary: #1a56db;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f5f7;
-  --sidebar-accent-foreground: #1a56db;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #1a56db;
+  --sidebar: #F5F5F0;
+  --sidebar-foreground: #78716C;
+  --sidebar-primary: #1C1917;
+  --sidebar-primary-foreground: #FAFAF8;
+  --sidebar-accent: #F0EFE9;
+  --sidebar-accent-foreground: #1C1917;
+  --sidebar-border: #E7E5DF;
+  --sidebar-ring: #1C1917;
 }
 
 @layer base {
@@ -105,34 +106,36 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    letter-spacing: -0.005em;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     font-weight: 700;
   }
 
-  h1 {
-    letter-spacing: -0.025em;
-  }
-
-  h2 {
-    letter-spacing: -0.02em;
+  h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    font-weight: 600;
   }
 
   p {
-    line-height: 1.65;
+    line-height: 1.7;
   }
+}
+
+/* ─── Serif utility class ─── */
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
 /* ─── Custom animation utilities ─── */
@@ -317,3 +320,30 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* ─── Aura Chat specific styles ─── */
+.aura-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.aura-message-user {
+  @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-none px-4 py-2 max-w-[85%] self-end;
+}
+
+.aura-message-model {
+  @apply bg-white border border-border text-foreground rounded-2xl rounded-tl-none px-4 py-2 max-w-[85%] self-start;
+}
+
+.aura-pulse {
+  animation: auraPulse 2s infinite;
+}
+
+@keyframes auraPulse {
+  0% { box-shadow: 0 0 0 0 rgba(26, 86, 219, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(26, 86, 219, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 86, 219, 0); }
+}

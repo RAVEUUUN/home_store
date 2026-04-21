@@ -16,7 +16,6 @@ import AdminDashboard from '@/pages/admin/Dashboard'
 import AdminProducts from '@/pages/admin/Products'
 import AdminOrders from '@/pages/admin/Orders'
 import AlertStocks from '@/pages/admin/AlertStocks'
-import { useAuth } from '@/context/AuthContext'
 
 function StoreLayout() {
   return (
@@ -73,6 +72,7 @@ export default function App() {
             </Route>
           </Routes>
           <Toaster position="bottom-right" richColors />
+          <AuraChat />
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

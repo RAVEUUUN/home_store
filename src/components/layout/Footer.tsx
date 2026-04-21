@@ -1,118 +1,103 @@
 import { Link } from 'react-router-dom'
-import { Zap, Mail, Phone, MapPin, Facebook, Instagram, Twitter, Youtube, ArrowRight } from 'lucide-react'
+import { Mail, Phone, MapPin, Instagram, Twitter, Youtube, ArrowUpRight } from 'lucide-react'
 
-const footerLinks = {
-    'Quick Links': [
+const footerCols = {
+    'Navigate': [
         { name: 'Home', path: '/' },
         { name: 'Shop All', path: '/shop' },
-        { name: 'Deals', path: '/shop' },
-        { name: 'About Us', path: '/' },
+        { name: 'Offers & Deals', path: '/shop' },
+        { name: 'About HomeStore', path: '/' },
     ],
-    Categories: [
+    'Collections': [
         { name: 'Refrigerators', path: '/shop?category=Refrigerators' },
         { name: 'Washing Machines', path: '/shop?category=Washing Machines' },
-        { name: 'Ovens & Ranges', path: '/shop?category=Ovens & Ranges' },
+        { name: 'Ovens & Ranges', path: '/shop?category=Ovens' },
         { name: 'Dishwashers', path: '/shop?category=Dishwashers' },
     ],
-    Support: [
+    'Client Services': [
         { name: 'Contact Us', path: '/' },
-        { name: 'FAQs', path: '/' },
-        { name: 'Shipping Info', path: '/' },
-        { name: 'Returns', path: '/' },
+        { name: 'Frequently Asked', path: '/' },
+        { name: 'Shipping Policy', path: '/' },
+        { name: 'Returns & Exchanges', path: '/' },
     ],
 }
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-900 text-slate-300">
-            {/* Main content */}
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-12">
-                    {/* Brand */}
-                    <div className="col-span-2 md:col-span-4 lg:col-span-1 space-y-5">
-                        <Link to="/" className="flex items-center gap-2.5 group">
-                            <div className="flex items-center justify-center size-9 rounded-lg bg-primary text-white shadow-sm">
-                                <Zap className="size-5" />
-                            </div>
-                            <div>
-                                <span className="font-bold text-lg text-white">Home</span>
-                                <span className="font-bold text-lg text-white/70">Store</span>
-                            </div>
+        <footer className="bg-[#1C1917] text-white/60">
+            {/* Top section */}
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 border-b border-white/10 pb-12">
+                    {/* Brand column */}
+                    <div className="lg:col-span-4 space-y-6">
+                        <Link to="/" className="group inline-block">
+                            <span className="font-serif font-bold text-2xl text-white tracking-tight">
+                                Home<span className="font-light italic text-white/60">Store</span>
+                            </span>
                         </Link>
-                        <p className="text-sm leading-relaxed text-slate-400 max-w-xs">
-                            Your one-stop shop for premium household appliances. Quality products, unbeatable prices, expert support.
+                        <p className="text-sm leading-relaxed text-white/40 max-w-xs">
+                            A curated collection of premium household appliances for the modern home. Crafted for those who demand the very best.
                         </p>
-                        <div className="flex items-center gap-2.5">
-                            {[Facebook, Instagram, Twitter, Youtube].map((Icon, i) => (
-                                <a
-                                    key={i}
-                                    href="#"
-                                    className="flex items-center justify-center size-9 rounded-lg bg-white/5 text-slate-400 hover:bg-primary hover:text-white transition-all duration-200 btn-pop"
-                                >
-                                    <Icon className="size-4" />
-                                </a>
-                            ))}
+                        {/* Newsletter */}
+                        <div className="space-y-3">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-white/30 font-medium">Join the Collection</p>
+                            <div className="flex">
+                                <input
+                                    type="email"
+                                    placeholder="Your email address"
+                                    className="flex-1 bg-white/5 border border-white/10 text-sm text-white placeholder:text-white/20 px-4 py-3 focus:outline-none focus:border-white/30 transition-colors"
+                                />
+                                <button className="bg-white text-[#1C1917] px-5 py-3 text-sm font-semibold hover:bg-white/90 transition-colors flex items-center gap-1.5">
+                                    <ArrowUpRight className="size-4" />
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     {/* Link columns */}
-                    {Object.entries(footerLinks).map(([title, links]) => (
-                        <div key={title} className="space-y-3">
-                            <h3 className="font-semibold text-sm text-white tracking-wide">{title}</h3>
-                            <ul className="space-y-2.5">
-                                {links.map(link => (
-                                    <li key={link.name}>
-                                        <Link
-                                            to={link.path}
-                                            className="text-sm text-slate-400 hover:text-primary transition-colors duration-200 flex items-center gap-1 group"
-                                        >
-                                            <ChevronRightIcon className="size-3 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200 text-primary" />
-                                            {link.name}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-
-                    {/* Contact */}
-                    <div className="space-y-3 col-span-2 sm:col-span-1">
-                        <h3 className="font-semibold text-sm text-white tracking-wide">Contact Us</h3>
-                        <div className="space-y-3">
-                            {[
-                                { icon: Phone, text: '(555) 123-4567' },
-                                { icon: Mail, text: 'support@homestore.com' },
-                                { icon: MapPin, text: '123 Appliance Ave, NY 10001' },
-                            ].map(item => (
-                                <div key={item.text} className="flex items-start gap-3 text-sm text-slate-400">
-                                    <item.icon className="size-4 mt-0.5 text-primary shrink-0" />
-                                    <span>{item.text}</span>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 lg:pl-8">
+                        {Object.entries(footerCols).map(([title, links]) => (
+                            <div key={title} className="space-y-4">
+                                <h4 className="text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">{title}</h4>
+                                <ul className="space-y-3">
+                                    {links.map(link => (
+                                        <li key={link.name}>
+                                            <Link to={link.path}
+                                                className="text-sm text-white/50 hover:text-white transition-colors duration-200">
+                                                {link.name}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </div>
 
-            {/* Bottom bar */}
-            <div className="border-t border-white/10">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <p className="text-xs text-slate-500">
-                        &copy; {new Date().getFullYear()} HomeStore. All rights reserved.
+                {/* Bottom bar */}
+                <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <p className="text-[11px] text-white/25 tracking-wide">
+                        © {new Date().getFullYear()} HomeStore. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-                        <span>·</span>
-                        <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-                        <span>·</span>
-                        <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
+
+                    {/* Contact inline */}
+                    <div className="flex flex-wrap items-center gap-6 text-[11px] text-white/30">
+                        <span className="flex items-center gap-2"><Phone className="size-3" /> (555) 123-4567</span>
+                        <span className="flex items-center gap-2"><Mail className="size-3" /> support@homestore.com</span>
+                        <span className="flex items-center gap-2"><MapPin className="size-3" /> Tunis, Tunisia</span>
+                    </div>
+
+                    {/* Social */}
+                    <div className="flex items-center gap-4">
+                        {[Instagram, Twitter, Youtube].map((Icon, i) => (
+                            <a key={i} href="#"
+                                className="text-white/25 hover:text-white transition-colors duration-200">
+                                <Icon className="size-4" />
+                            </a>
+                        ))}
                     </div>
                 </div>
             </div>
         </footer>
     )
-}
-
-function ChevronRightIcon({ className }: { className?: string }) {
-    return <ArrowRight className={className} />
 }

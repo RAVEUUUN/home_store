@@ -2,17 +2,14 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
     Menu, ShoppingCart, User, Search, LogOut, Settings,
-    ChevronDown, Zap, Package, Heart, UserCircle, LogIn, UserPlus,
+    ChevronDown, Package, Heart, UserCircle, LogIn, UserPlus, X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem,
     DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu'
-import { Separator } from '@/components/ui/separator'
 import { useCart } from '@/context/CartContext'
 import { useAuth } from '@/context/AuthContext'
 import { getProducts } from '@/services/supabaseProducts'
@@ -25,8 +22,8 @@ const navLinks = [
 
 export default function Navbar() {
     const [searchQuery, setSearchQuery] = useState('')
+    const [searchOpen, setSearchOpen] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const { itemCount, total } = useCart()
     const { user, isAuthenticated, logout } = useAuth()
@@ -41,9 +38,8 @@ export default function Navbar() {
         })
     }, [])
 
-    // Track scroll for visual distinction
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 8)
+        const onScroll = () => setScrolled(window.scrollY > 12)
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
@@ -53,7 +49,7 @@ export default function Navbar() {
         if (searchQuery.trim()) {
             navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`)
             setSearchQuery('')
-            setMobileSearchOpen(false)
+            setSearchOpen(false)
         }
     }
 
@@ -61,284 +57,180 @@ export default function Navbar() {
 
     return (
         <header className="sticky top-0 z-50 w-full">
-            {/* ─── Top announcement bar ─── */}
-            <div className="bg-slate-900 text-white">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-9 text-xs">
-                    <div className="flex items-center gap-4">
-                        <span className="hidden sm:inline text-slate-400">📞 (555) 123-4567</span>
-                        <span className="hidden md:inline text-slate-400">✉️ support@homestore.com</span>
-                    </div>
-                    <span className="font-medium text-slate-200">
-                        Free shipping on orders 1,500 TND+
+            {/* ─── Announcement Strip ─── */}
+            <div className="bg-[#1C1917] text-white/70">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between h-9">
+                    <span className="hidden sm:inline text-[11px] tracking-widest uppercase font-medium text-white/40">
+                        Free Delivery on Orders 1,500 TND+
                     </span>
+                    <p className="text-[11px] text-center tracking-widest uppercase font-medium w-full sm:w-auto">
+                        New Season — Premium Appliances Curated for You
+                    </p>
+                    <div className="hidden sm:flex items-center gap-6 text-[11px] text-white/40 tracking-wide">
+                        <span>support@homestore.com</span>
+                    </div>
                 </div>
             </div>
 
-            {/* ─── Main navbar ─── */}
-            <div className={`bg-white/95 backdrop-blur-md border-b transition-shadow duration-300 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+            {/* ─── Main Navbar ─── */}
+            <div className={`bg-[#FAFAF8]/96 backdrop-blur-lg border-b border-[#E7E5DF] transition-all duration-500 ${scrolled ? 'shadow-[0_1px_20px_rgba(28,25,23,0.08)]' : ''}`}>
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center h-[4.25rem] gap-3 lg:gap-6">
+                    <div className="flex items-center h-[72px] gap-4 lg:gap-8">
 
-                        {/* ── Mobile menu ── */}
+                        {/* ── Mobile menu trigger ── */}
                         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon" className="lg:hidden shrink-0 -ml-2">
+                                <button className="lg:hidden shrink-0 -ml-1 p-2 text-foreground/70 hover:text-foreground transition-colors">
                                     <Menu className="size-5" />
-                                </Button>
+                                </button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="w-80 p-0 flex flex-col">
-                                <SheetHeader className="p-5 pb-4 border-b bg-slate-900 text-white">
-                                    <SheetTitle className="flex items-center gap-2.5 text-white">
-                                        <div className="flex items-center justify-center size-8 rounded-lg bg-primary text-white">
-                                            <Zap className="size-4" />
-                                        </div>
-                                        HomeStore
+                            <SheetContent side="left" className="w-80 p-0 flex flex-col bg-[#FAFAF8] border-r border-[#E7E5DF]">
+                                <SheetHeader className="p-6 pb-4 border-b border-[#E7E5DF]">
+                                    <SheetTitle className="flex items-center gap-2 text-foreground text-left">
+                                        <span className="font-serif font-bold text-xl tracking-tight">HomeStore</span>
                                     </SheetTitle>
                                 </SheetHeader>
-                                <nav className="flex-1 overflow-y-auto py-2">
+                                <nav className="flex-1 overflow-y-auto py-4">
                                     {navLinks.map(link => (
-                                        <Link
-                                            key={link.path}
-                                            to={link.path}
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={`block px-6 py-3 text-sm font-medium transition-colors ${isActive(link.path) ? 'bg-primary/5 text-primary border-l-2 border-primary' : 'hover:bg-muted'}`}
-                                        >
+                                        <Link key={link.path} to={link.path} onClick={() => setMobileMenuOpen(false)}
+                                            className={`block px-6 py-3 text-sm font-medium transition-colors ${isActive(link.path) ? 'text-foreground border-l-2 border-foreground bg-black/5' : 'text-foreground/60 hover:text-foreground hover:bg-black/5'}`}>
                                             {link.name}
                                         </Link>
                                     ))}
-                                    <Separator className="my-2" />
-                                    <p className="px-6 py-2 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-                                        Categories
-                                    </p>
-                                    {navCategories.map(catName => (
-                                        <Link
-                                            key={catName}
-                                            to={`/shop?category=${catName}`}
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className="flex items-center gap-3 px-6 py-2.5 text-sm hover:bg-muted transition-colors"
-                                        >
-                                            <span className="flex-1">{catName}</span>
-                                        </Link>
-                                    ))}
-                                    <Separator className="my-2" />
-                                    {/* Mobile account links */}
-                                    {isAuthenticated ? (
-                                        <>
-                                            <div className="px-6 py-3 flex items-center gap-3">
-                                                <div className="flex items-center justify-center size-8 rounded-full bg-primary text-primary-foreground text-xs font-bold">
-                                                    {user?.name.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div>
-                                                    <p className="text-sm font-semibold">{user?.name}</p>
-                                                    <p className="text-[11px] text-muted-foreground">{user?.email}</p>
-                                                </div>
-                                            </div>
-                                            {user?.role === 'admin' && (
-                                                <Link to="/admin" onClick={() => setMobileMenuOpen(false)}
-                                                    className="flex items-center gap-3 px-6 py-2.5 text-sm hover:bg-muted transition-colors">
-                                                    <Settings className="size-4 text-muted-foreground" /> Admin Panel
-                                                </Link>
-                                            )}
-                                            <button onClick={() => { logout(); setMobileMenuOpen(false) }}
-                                                className="flex items-center gap-3 px-6 py-2.5 text-sm text-destructive hover:bg-destructive/5 transition-colors w-full text-left">
-                                                <LogOut className="size-4" /> Logout
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <Link to="/login" onClick={() => setMobileMenuOpen(false)}
-                                            className="flex items-center gap-3 px-6 py-2.5 text-sm hover:bg-muted transition-colors">
-                                            <LogIn className="size-4 text-muted-foreground" /> Sign In / Register
-                                        </Link>
-                                    )}
+                                    <div className="px-6 pt-6 pb-2">
+                                        <p className="text-[10px] font-bold text-foreground/30 uppercase tracking-[0.2em] mb-3">Categories</p>
+                                        {navCategories.map(cat => (
+                                            <Link key={cat} to={`/shop?category=${cat}`} onClick={() => setMobileMenuOpen(false)}
+                                                className="block py-2.5 text-sm text-foreground/60 hover:text-foreground transition-colors">
+                                                {cat}
+                                            </Link>
+                                        ))}
+                                    </div>
                                 </nav>
                             </SheetContent>
                         </Sheet>
 
                         {/* ── Logo ── */}
-                        <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-                            <div className="flex items-center justify-center size-9 rounded-lg bg-primary text-white shadow-sm transition-shadow">
-                                <Zap className="size-5" />
-                            </div>
-                            <div className="hidden sm:block">
-                                <span className="font-bold text-lg text-foreground tracking-tight">Home</span>
-                                <span className="font-bold text-lg text-primary tracking-tight">Store</span>
-
-                            </div>
+                        <Link to="/" className="shrink-0 group">
+                            <span className="font-serif font-bold text-xl tracking-tight text-foreground group-hover:opacity-75 transition-opacity">
+                                Home<span className="font-light italic">Store</span>
+                            </span>
                         </Link>
 
-                        {/* ── Desktop navigation ── */}
-                        <nav className="hidden lg:flex items-center gap-0.5 ml-2">
+                        {/* ── Desktop Nav ── */}
+                        <nav className="hidden lg:flex items-center gap-1 ml-4">
                             {navLinks.map(link => (
-                                <Link key={link.path} to={link.path}>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className={`text-sm font-medium transition-colors ${isActive(link.path)
-                                            ? 'text-primary bg-primary/5'
-                                            : 'text-foreground/70 hover:text-primary hover:bg-primary/5'
-                                            }`}
-                                    >
-                                        {link.name}
-                                    </Button>
+                                <Link key={link.path} to={link.path}
+                                    className={`px-4 py-2 text-sm font-medium transition-colors rounded-sm ${isActive(link.path) ? 'text-foreground' : 'text-foreground/50 hover:text-foreground'}`}>
+                                    {link.name}
                                 </Link>
                             ))}
 
-                            {/* Category mega-menu dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="text-sm font-medium text-foreground/70 hover:text-primary hover:bg-primary/5 gap-1">
-                                        Categories <ChevronDown className="size-3.5 transition-transform" />
-                                    </Button>
+                                    <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-foreground/50 hover:text-foreground transition-colors">
+                                        Collections <ChevronDown className="size-3.5 mt-px" />
+                                    </button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="start" className="w-[420px] p-4">
-                                    <DropdownMenuLabel className="text-xs text-muted-foreground uppercase tracking-wider pb-2">
+                                <DropdownMenuContent align="start" className="w-64 p-2 bg-[#FAFAF8] border-[#E7E5DF]">
+                                    <DropdownMenuLabel className="text-[10px] text-foreground/40 uppercase tracking-[0.2em] px-3 py-2">
                                         Shop by Category
                                     </DropdownMenuLabel>
-                                    <div className="grid grid-cols-2 gap-1">
-                                        {navCategories.map(catName => (
-                                            <DropdownMenuItem
-                                                key={catName}
-                                                onClick={() => navigate(`/shop?category=${catName}`)}
-                                                className="flex items-center gap-3 p-3 rounded-lg cursor-pointer"
-                                            >
-                                                <div className="min-w-0">
-                                                    <p className="text-sm font-medium truncate">{catName}</p>
-                                                </div>
-                                            </DropdownMenuItem>
-                                        ))}
-                                    </div>
-                                    <Separator className="my-2" />
-                                    <DropdownMenuItem
-                                        onClick={() => navigate('/shop')}
-                                        className="justify-center text-sm font-medium text-primary hover:!text-primary cursor-pointer"
-                                    >
-                                        View All Products →
+                                    {navCategories.map(cat => (
+                                        <DropdownMenuItem key={cat} onClick={() => navigate(`/shop?category=${cat}`)}
+                                            className="px-3 py-2.5 text-sm text-foreground/70 hover:text-foreground cursor-pointer rounded-sm">
+                                            {cat}
+                                        </DropdownMenuItem>
+                                    ))}
+                                    <DropdownMenuSeparator className="bg-[#E7E5DF]" />
+                                    <DropdownMenuItem onClick={() => navigate('/shop')}
+                                        className="px-3 py-2.5 text-sm font-semibold cursor-pointer rounded-sm">
+                                        View All →
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </nav>
 
-                        {/* ── Desktop search ── */}
-                        <form onSubmit={handleSearch} className="hidden md:block flex-1 max-w-md mx-4 lg:mx-6">
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-                                <Input
-                                    placeholder="Search appliances, brands..."
-                                    value={searchQuery}
-                                    onChange={e => setSearchQuery(e.target.value)}
-                                    className="pl-10 pr-4 h-10 bg-slate-50/80 border-slate-200 focus:bg-white focus:border-primary/40 focus:ring-primary/10 transition-all rounded-lg"
-                                />
-                            </div>
-                        </form>
-
-                        {/* ── Right actions ── */}
+                        {/* ── Right Actions ── */}
                         <div className="flex items-center gap-1 ml-auto">
 
-                            {/* Mobile search button → Sheet */}
-                            <Sheet open={mobileSearchOpen} onOpenChange={setMobileSearchOpen}>
-                                <SheetTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="md:hidden shrink-0">
-                                        <Search className="size-5" />
-                                    </Button>
-                                </SheetTrigger>
-                                <SheetContent side="top" className="h-auto">
-                                    <SheetHeader>
-                                        <SheetTitle className="text-left">Search Products</SheetTitle>
-                                    </SheetHeader>
-                                    <form onSubmit={handleSearch} className="mt-4">
-                                        <div className="relative">
-                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-                                            <Input
-                                                placeholder="Search appliances, brands..."
-                                                value={searchQuery}
-                                                onChange={e => setSearchQuery(e.target.value)}
-                                                className="pl-10 pr-4 h-12 text-base bg-slate-50"
-                                                autoFocus
-                                            />
-                                        </div>
-                                        <div className="flex gap-2 mt-3">
-                                            <Button type="submit" className="flex-1 gap-2 bg-primary hover:bg-primary/90 text-white btn-pop">
-                                                <Search className="size-4" /> Search
-                                            </Button>
-                                            <Button type="button" variant="outline" onClick={() => setMobileSearchOpen(false)}>
-                                                Cancel
-                                            </Button>
-                                        </div>
-                                    </form>
-                                </SheetContent>
-                            </Sheet>
+                            {/* Search */}
+                            {searchOpen ? (
+                                <form onSubmit={handleSearch} className="flex items-center gap-2 animate-fade-in">
+                                    <div className="relative">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-foreground/40" />
+                                        <input
+                                            autoFocus
+                                            type="text"
+                                            placeholder="Search appliances..."
+                                            value={searchQuery}
+                                            onChange={e => setSearchQuery(e.target.value)}
+                                            className="pl-9 pr-4 h-9 w-64 text-sm bg-[#F0EFE9] border border-[#E7E5DF] rounded-none focus:outline-none focus:border-foreground transition-colors placeholder:text-foreground/30"
+                                        />
+                                    </div>
+                                    <button type="button" onClick={() => setSearchOpen(false)} className="p-2 text-foreground/50 hover:text-foreground">
+                                        <X className="size-4" />
+                                    </button>
+                                </form>
+                            ) : (
+                                <button onClick={() => setSearchOpen(true)} className="p-2.5 text-foreground/50 hover:text-foreground transition-colors">
+                                    <Search className="size-[18px]" />
+                                </button>
+                            )}
 
-                            {/* Wishlist (desktop) */}
-                            <Button variant="ghost" size="icon" className="hidden lg:inline-flex text-foreground/70 hover:text-primary hover:bg-primary/5">
-                                <Heart className="size-5" />
-                            </Button>
+                            {/* Wishlist */}
+                            <button className="hidden sm:flex p-2.5 text-foreground/50 hover:text-foreground transition-colors">
+                                <Heart className="size-[18px]" />
+                            </button>
 
                             {/* Cart */}
-                            <Link to="/cart">
-                                <Button variant="ghost" size="sm" className="relative gap-2 hover:text-primary hover:bg-primary/5 btn-pop h-10 px-2.5 lg:px-3">
-                                    <div className="relative">
-                                        <ShoppingCart className="size-5" />
-                                        {itemCount > 0 && (
-                                            <Badge className="absolute -top-2 -right-2.5 size-[18px] flex items-center justify-center p-0 text-[10px] font-bold bg-primary hover:bg-primary text-white border-0 animate-scale-in">
-                                                {itemCount}
-                                            </Badge>
-                                        )}
-                                    </div>
-                                    <div className="hidden lg:block text-left">
-                                        <p className="text-[10px] text-muted-foreground leading-none">Cart</p>
-                                        <p className="text-xs font-bold leading-tight">{formatPrice(total)}</p>
-                                    </div>
-                                </Button>
+                            <Link to="/cart" className="relative flex items-center gap-2.5 px-4 py-2 ml-1 bg-[#1C1917] text-[#FAFAF8] hover:bg-[#1C1917]/90 transition-colors group">
+                                <div className="relative">
+                                    <ShoppingCart className="size-[18px]" />
+                                    {itemCount > 0 && (
+                                        <span className="absolute -top-2 -right-2 flex items-center justify-center size-4 text-[9px] font-bold bg-[#B45309] text-white rounded-full animate-scale-in">
+                                            {itemCount}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="hidden lg:block">
+                                    <p className="text-[10px] text-white/50 leading-none uppercase tracking-wider">Cart</p>
+                                    <p className="text-xs font-semibold leading-snug">{formatPrice(total)}</p>
+                                </div>
                             </Link>
-
-                            <Separator orientation="vertical" className="h-6 mx-1 hidden sm:block" />
 
                             {/* Account */}
                             {isAuthenticated ? (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="gap-2 hover:text-primary hover:bg-primary/5 h-10">
-                                            <div className="flex items-center justify-center size-7 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-xs font-bold ring-2 ring-primary/10">
+                                        <button className="hidden sm:flex items-center gap-2 ml-1 p-2 text-foreground/50 hover:text-foreground transition-colors">
+                                            <div className="flex items-center justify-center size-7 rounded-full border border-[#E7E5DF] bg-[#F0EFE9] text-foreground/70 text-xs font-bold">
                                                 {user?.name.charAt(0).toUpperCase()}
                                             </div>
-                                            <div className="hidden lg:block text-left">
-                                                <p className="text-[10px] text-muted-foreground leading-none">Account</p>
-                                                <p className="text-xs font-semibold leading-tight">{user?.name.split(' ')[0]}</p>
-                                            </div>
-                                            <ChevronDown className="size-3.5 hidden lg:block text-muted-foreground" />
-                                        </Button>
+                                            <ChevronDown className="size-3.5" />
+                                        </button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-56">
-                                        {/* User info header */}
-                                        <div className="px-3 py-3 flex items-center gap-3">
-                                            <div className="flex items-center justify-center size-9 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground text-sm font-bold">
-                                                {user?.name.charAt(0).toUpperCase()}
-                                            </div>
-                                            <div className="min-w-0">
-                                                <p className="text-sm font-semibold truncate">{user?.name}</p>
-                                                <p className="text-[11px] text-muted-foreground truncate">{user?.email}</p>
-                                            </div>
+                                    <DropdownMenuContent align="end" className="w-52 bg-[#FAFAF8] border-[#E7E5DF]">
+                                        <div className="px-3 py-3 border-b border-[#E7E5DF]">
+                                            <p className="text-sm font-semibold">{user?.name}</p>
+                                            <p className="text-[11px] text-foreground/50 truncate">{user?.email}</p>
                                         </div>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={() => navigate('/')} className="gap-2.5 py-2">
-                                            <UserCircle className="size-4 text-muted-foreground" /> My Profile
+                                        <DropdownMenuItem onClick={() => navigate('/')} className="gap-2.5 py-2.5 cursor-pointer">
+                                            <UserCircle className="size-4 text-foreground/40" /> My Profile
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => navigate('/')} className="gap-2.5 py-2">
-                                            <Package className="size-4 text-muted-foreground" /> My Orders
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => navigate('/')} className="gap-2.5 py-2">
-                                            <Heart className="size-4 text-muted-foreground" /> Wishlist
+                                        <DropdownMenuItem onClick={() => navigate('/')} className="gap-2.5 py-2.5 cursor-pointer">
+                                            <Package className="size-4 text-foreground/40" /> My Orders
                                         </DropdownMenuItem>
                                         {user?.role === 'admin' && (
                                             <>
-                                                <DropdownMenuSeparator />
-                                                <DropdownMenuItem onClick={() => navigate('/admin')} className="gap-2.5 py-2">
-                                                    <Settings className="size-4 text-muted-foreground" /> Admin Panel
+                                                <DropdownMenuSeparator className="bg-[#E7E5DF]" />
+                                                <DropdownMenuItem onClick={() => navigate('/admin')} className="gap-2.5 py-2.5 cursor-pointer">
+                                                    <Settings className="size-4 text-foreground/40" /> Admin Panel
                                                 </DropdownMenuItem>
                                             </>
                                         )}
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={logout} className="gap-2.5 py-2 text-destructive focus:text-destructive">
+                                        <DropdownMenuSeparator className="bg-[#E7E5DF]" />
+                                        <DropdownMenuItem onClick={logout} className="gap-2.5 py-2.5 text-destructive cursor-pointer">
                                             <LogOut className="size-4" /> Logout
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
@@ -346,29 +238,24 @@ export default function Navbar() {
                             ) : (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="gap-2 hover:text-primary hover:bg-primary/5 h-10">
-                                            <div className="flex items-center justify-center size-7 rounded-full bg-slate-100 text-muted-foreground">
-                                                <User className="size-4" />
-                                            </div>
-                                            <span className="hidden lg:inline text-sm font-medium">Account</span>
-                                            <ChevronDown className="size-3.5 hidden lg:block text-muted-foreground" />
-                                        </Button>
+                                        <button className="hidden sm:flex items-center gap-2 ml-1 p-2 text-foreground/50 hover:text-foreground transition-colors">
+                                            <User className="size-[18px]" />
+                                        </button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end" className="w-52">
-                                        <DropdownMenuLabel className="text-xs text-muted-foreground">Welcome!</DropdownMenuLabel>
-                                        <DropdownMenuItem onClick={() => navigate('/login')} className="gap-2.5 py-2.5">
-                                            <LogIn className="size-4 text-muted-foreground" />
+                                    <DropdownMenuContent align="end" className="w-48 bg-[#FAFAF8] border-[#E7E5DF]">
+                                        <DropdownMenuItem onClick={() => navigate('/login')} className="gap-2.5 py-2.5 cursor-pointer">
+                                            <LogIn className="size-4 text-foreground/40" />
                                             <div>
-                                                <p className="font-medium">Sign In</p>
-                                                <p className="text-[11px] text-muted-foreground">Access your account</p>
+                                                <p className="font-medium text-sm">Sign In</p>
+                                                <p className="text-[11px] text-foreground/50">Access your account</p>
                                             </div>
                                         </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem onClick={() => navigate('/login')} className="gap-2.5 py-2.5">
-                                            <UserPlus className="size-4 text-muted-foreground" />
+                                        <DropdownMenuSeparator className="bg-[#E7E5DF]" />
+                                        <DropdownMenuItem onClick={() => navigate('/login')} className="gap-2.5 py-2.5 cursor-pointer">
+                                            <UserPlus className="size-4 text-foreground/40" />
                                             <div>
-                                                <p className="font-medium">Register</p>
-                                                <p className="text-[11px] text-muted-foreground">Create a new account</p>
+                                                <p className="font-medium text-sm">Register</p>
+                                                <p className="text-[11px] text-foreground/50">Create account</p>
                                             </div>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
